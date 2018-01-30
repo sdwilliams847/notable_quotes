@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quotable Quotes</title>
+    <link href="/static/belt_app/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/belt_app/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1>Welcome, {{ user.name }}!</h1>
+            <a href="/logout">Logout</a>
+        </div><br>
+        <div class="row">
+            <div class="col-md-5">
+                <h3>Quotable Quotes</h3><br>
+                {% for qs in quotes %}  
+                    <p class="quote"> {{ qs.author }} : {{ qs.text }}</p>
+                    <i>posted by: <a href="/users/{{qs.posted_by.id}}">{{ qs.posted_by.alias}}</a></i><br><br>
+                    {% if qs.posted_by.id == user.id %}
+                        <a href="/delete/quote/{{qs.id}}"><button type="submit" class="btn btn-secondary-sm float-right">Delete</button></a></a>
+                    {% endif %}
+                    <a href="/quotes/favorite/{{qs.id}}"><button type="submit" class="btn btn-primary">Add to Favorites</button></a><br><br>
+                {% endfor %}
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-5">
+                <h3>Favorite Quotes</h3><br>
+                {% for f in faves %}  
+                    <p class="quote"> {{ f.quote.author }} : {{ f.quote.text }}</p>
+                    <i>posted by: <a href="/users/{{f.quote.posted_by.id}}">{{ f.quote.posted_by.alias}}</a></i><br><br>
+                    {% if f.quote.posted_by.id == user.id %}
+                        <a href="/delete/quote/{{f.quote.id}}"><button type="submit" class="btn btn-secondary-sm float-right">Delete</button></a></a>
+                    {% endif %}
+                    <a href="/quotes/delete/{{f.quote.id}}"><button type="submit" class="btn btn-secondary">Remove from Favorites</button></a><br><br>
+                {% endfor %}
+                <fieldset class="form-group">
+                    <form action="/new_quote" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="author">Quoted By: </label>
+                            <input type="text" class="form-control" id="author" name="author" placeholder="Author">
+                        </div>
+                        <div class="form-group">
+                            <label for="text">Message: </label>
+                            <textarea class="form-control" name="text" rows="5" placeholder="Quote"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if "error" in message.tags %}
+                            <ul>
+                                <li class="error">{{message}}</li>
+                            </ul>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</body>
+</html>    

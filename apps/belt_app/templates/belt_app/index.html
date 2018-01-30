@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login and Register</title>
+    <link href="/static/belt_app/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/belt_app/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <br><fieldset>        
+                    <legend>Registration Form</legend>
+                    <form action="/register" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Name: </label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="alias">Alias: </label>
+                            <input type="text" class="form-control" id="alias"name="alias" placeholder="alias">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password: </label>
+                            <input type="password" class="form-control" id="password" name="password"placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password: </label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="dob" class="col-form-label">Date of Birth: </label>
+                            <input class="form-control" type="date" value="{{age}}"name="dob">
+                        </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if "error" in message.tags %}
+                            <ul>
+                                <li class="error">{{message}}</li>
+                            </ul>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+            </fieldset>
+            </div>
+            <div class="col-md-6">
+                <br><fieldset>
+                    <legend>Login</legend>
+                    <form action="/login" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="alias">Alias: </label>
+                            <input type="text" class="form-control" id="alias" name="alias" placeholder="alias">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password: </label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if "warning" in message.tags %}
+                            <ul>
+                                <li class="error">{{message}}</li>
+                            </ul>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

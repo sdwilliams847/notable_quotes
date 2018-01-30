@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Page</title>
+    <link href="/static/belt_app/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/belt_app/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h4>Logged in as: <i><a href="/users/{{sesh.id}}">{{sesh.alias}}</a></i></h4>
+            <a href="/quotes">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div><br>
+        <h1>Posts by: {{ user.name }}</h1>
+        <h2> Count: {{ total }}</h2><br>
+        {% for qs in quotes %}  
+        <div class="row">
+            <div class="col-md-8">
+                <p class="quote"> {{ qs.author }} : {{ qs.text }}</p>
+                {% if request.session.user_id == user.id %}
+                    <a href="/delete/quote/{{qs.id}}"><button type="submit" class="btn btn-secondary-sm float-right">Delete</button></a></a>
+                {% endif %}
+                <i>posted by: {{ qs.posted_by.alias}}</i>
+            </div>
+        </div><br><br>
+        {% endfor %}
+    </div>
+</body>
+</html>
